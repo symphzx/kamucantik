@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lirik Lagu</title>
+    <link rel="stylesheet" href="lirik.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="jquery.js"></script>
+</head>
+<body>
+    <canvas id="hologramVisualizer"></canvas>
+    <audio id = "lagu" src="karena-kamu-cantik.mp3"></audio>
+    <div id="container">
+        <div id="textbox">
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <br>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <div id="button">
+            <img id="play" class="button" src="play.png" alt="Play">
+            <img id="stop" class="button" src="stop.png" alt="Pause">
+        </div>        
+        <div id="controls">
+            <img class = "control" src="back.png" alt="">
+            <img class = "control" src="forward.png" alt="">
+        </div>
+        <div id="loadbar">
+            <div id = "load"></div>
+        </div>
+    </div>
+    <script src="lirik.js"></script>
+</body>
+</html>
