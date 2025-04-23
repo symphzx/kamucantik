@@ -4,7 +4,7 @@ let lirik = [
     "Karena kamu cantik",
     "Kan ku beri segalanya apa yang ku punya",
     "Dan hatimu baik",
-    "Sempurnalah duniaku saat kau disisiku",
+    "Sempurnalah  duniaku  saat  kau  disisiku",
     "Bukan karena make up di wajahmu",
     "Atau lipstik merah itu",
     "Lembut hati tutur kata",
