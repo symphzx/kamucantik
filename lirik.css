@@ -39,54 +39,446 @@
         border: 2px solid #4a5052;
         border-radius: 30px;
         width: 50%;
-        min-height: 370px; /* Changed to min-height for better text display */
+        min-height: 370px; 
         position: absolute;
-        overflow: hidden; /* Contain the floating hearts */
         top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         display: flex;
-        flex-direction: column; /* Added for better text flow */
-        padding: 25px 0;
+        flex-direction: column;
+        padding: 20px; /* Pastikan padding cukup tapi tidak berlebihan */
         color: white;
+        overflow: hidden; /* Menyembunyikan elemen yang melampaui batas */
     }
 
     #textbox {
         flex: 1;
         overflow-y: auto;
-        padding: 15px 25px; /* Added padding for better spacing */
-        word-wrap: break-word; /* Ensure words break at appropriate points */
-        overflow-wrap: break-word; /* Allow word wrapping */
-        max-height: 80%; /* Limit height to prevent overflow */
-        display: flex;
+        padding: 15px 25px;
+        word-wrap: break-word; /* Memastikan kata terputus dengan baik */
+        overflow-wrap: break-word; /* Mengizinkan pembungkusan kata */
+        max-height: 80%; /* Membatasi tinggi agar tidak terlalu tinggi */
+        display: block;
         flex-direction: column;
         justify-content: flex-start;
-        overflow: hidden; /* Hide overflowing text */
+        max-width: 100%;
     }
     
     /* Additional styles for text content */
     #textbox p {
         padding: 5px 0;
-        margin: 0;
-        font-size: 20px;
+        margin: 5px 0;
+        font-size: 2px;
         font-weight: lighter;
         line-height: 1.5;
-        color: white;
+        color: rgb(255, 0, 0);
         word-break: break-word; /* Ensure words wrap correctly */
+        word-wrap: break-word;
         white-space: normal; /* Allow text to wrap naturally */
         text-overflow: ellipsis; /* Add ellipsis (...) if text is cut off */
         max-width: 100%; /* Ensure content doesn't overflow horizontally */
+        overflow-wrap: break-word;
+    }
+    
+    
+    #button {
+        z-index: 100;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        bottom: 25px;
+        left: 50%;
+        transform: translate(-50%);
+        cursor: pointer;
+    }
+    #controls {
+        width: 200px;
+        height: 25px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        bottom: 26px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .control {
+        width: 25px;
+        height: 25px;
+    }
+    #stop {
+    opacity: 0;
+    }
+    #play {
+        opacity: 1;
+    }
+    .button {
+        width: 100%;
+        position: absolute;
+    }
+    #loadbar {
+        background-color: #a3a3a3;
+        width: 80%;
+        height: 3px;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+    #loadbar div {
+        width: 0%;
+        height: 100%;
+        background-color: white;
+    }
+    .playing {
+        animation: load 32s forwards linear;
     }
 
-    p {
-        padding: 5px 0;
-        margin: 0;
-        font-size: 20px;
-        font-weight: lighter;
-        line-height: 1.5;
-        color: white; /* Ensure text is white by default */
-        min-height: 28px; /* Ensure consistent line height */
+    @keyframes load {
+        0% {
+            width: 0%;
+        }
+        100% {
+            width: 100%;
+        }
     }
+
+    @keyframes lineEntrance {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+
+    .line-entrance {
+        animation: lineEntrance 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Character Animations */
+/* Add your animation effects here */
+.fade-char {
+    opacity: 0;
+    display: inline-block;
+    animation: fadeIn 0.4s forwards, gentleGlow 2s infinite alternate;
+}
+
+.rainbow-char {
+    animation: rainbow 4s infinite, fadeIn 0.4s forwards;
+}
+
+.float-char {
+    animation: float 3s ease-in-out infinite, fadeIn 0.4s forwards;
+}
+
+.shake-char {
+    animation: shake 0.8s ease-in-out, fadeIn 0.4s forwards;
+}
+
+.pulse-char {
+    animation: pulse 1.5s ease-in-out infinite, fadeIn 0.4s forwards;
+}
+
+.spin-char {
+    display: inline-block;
+    animation: spin 1.2s ease-out, fadeIn 0.4s forwards;
+}
+
+.wave-char {
+    animation: wave 1.8s ease-in-out infinite, fadeIn 0.4s forwards;
+}
+
+.glow-char {
+    animation: gentleGlow 2s infinite alternate, fadeIn 0.4s forwards;
+}
+
+.karaoke-highlight {
+    font-weight: bold;
+    padding: 0 2px;
+    position: relative;
+    z-index: 1;
+    color: white;
+    border-radius: 4px;
+    display: inline-block; /* Make it inline */
+    animation: glow 0.6s ease-in-out;
+}
+
+.karaoke-highlight::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(90deg, rgba(0, 242, 97, 0.454), rgba(5, 118, 230, 0.391));
+    z-index: -1;
+    border-radius: 4px;
+    filter: blur(6px);
+    animation: pulseGlow 3s infinite alternate; /* Optional animation, you can remove it if you want a static effect */
+}
+
+
+    /* Special Effects */
+    .heart-container, .sparkle-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .sparkle-container {
+        z-index: 1;
+    }
+
+    .floating-heart {
+        position: absolute;
+        font-size: calc(18px + (var(--size, 1) * 12px));
+        color: hsl(var(--hue), 100%, 70%);
+        animation: floatUp calc(var(--speed, 3) * 1s) ease-in forwards;
+        opacity: 0;
+        z-index: 0;
+        pointer-events: none;
+        filter: drop-shadow(0 0 6px currentColor);
+        will-change: transform, opacity;
+    }
+
+
+    .sparkle {
+        position: absolute;
+        width: calc(5px * var(--size, 1));
+        height: calc(5px * var(--size, 1));
+        background: hsla(var(--hue, 200), 100%, 70%, 0.8);
+        border-radius: 50%;
+        left: calc(var(--x) * 1%);
+        top: calc(var(--y) * 1%);
+        animation: sparkleTwinkle var(--duration, 1.5s) ease-out var(--delay, 0s) forwards;
+        box-shadow: 0 0 10px 2px currentColor;
+        opacity: 0;
+        transform: scale(0);
+        will-change: transform, opacity;
+        pointer-events: none;
+    }
+
+    /* Keyframes */
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-4px); }
+        40%, 80% { transform: translateX(4px); }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg) scale(0.8); opacity: 0; }
+        50% { transform: rotate(180deg) scale(1.2); }
+        100% { transform: rotate(360deg) scale(1); opacity: 1; }
+    }
+
+    @keyframes wave {
+        0%, 100% { transform: translateY(0); }
+        25% { transform: translateY(-8px); }
+        75% { transform: translateY(4px); }
+    }
+
+    @keyframes glow {
+        0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        100% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
+    }
+
+    @keyframes gentleGlow {
+        0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        100% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
+    }
+
+    @keyframes pulseGlow {
+        0% { opacity: 0.5; filter: blur(3px); }
+        100% { opacity: 0.8; filter: blur(5px); }
+    }
+
+    @keyframes floatUp {
+        0% { 
+            transform: translateY(0) rotate(0deg) scale(0.8); 
+            opacity: 0; 
+        }
+        20% { 
+            opacity: 0.9; 
+            transform: translateY(-20px) rotate(10deg) scale(1.1);
+        }
+        100% { 
+            transform: translateY(-180px) rotate(360deg) scale(0.6); 
+            opacity: 0; 
+        }
+    }
+
+    @keyframes sparkleTwinkle {
+        0% { 
+            transform: scale(0) rotate(0deg); 
+            opacity: 0; 
+            filter: brightness(1);
+        }
+        20% { 
+            transform: scale(1.5) rotate(20deg); 
+            opacity: 1; 
+            filter: brightness(1.5);
+        }
+        80% { 
+            opacity: 1; 
+            filter: brightness(1);
+        }
+        100% { 
+            transform: scale(0) rotate(60deg); 
+            opacity: 0; 
+            filter: brightness(0.5);
+        }
+    }
+    
+
+    .typewriter-cursor {
+        display: inline-block;
+        width: 2px;
+        background-color: white;
+        animation: blink 1s step-start infinite;
+        vertical-align: bottom;
+    }
+    
+    .typewriter-container {
+        position: relative;
+        display: inline-block;
+        background: linear-gradient(90deg, rgba(0, 242, 97, 0.454), rgba(5, 118, 230, 0.391));
+        border-radius: 5px;
+        overflow: hidden;
+        /* padding: 2px; */
+        color: white;
+        font-size: 18px;
+        font-weight: lighter;
+        text-align: center;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 97, 0.7); /* Double shadow effect */
+        animation: glowEffect 2s infinite alternate; /* Add glowing effect */
+        transition: background 2s ease-in-out; /* Smooth transition for background color */
+        white-space: normal !important;
+        word-break: break-word;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+    
+    .typewriter-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit; /* Inherit the background gradient from the parent */
+        filter: blur(12px); /* More intense blur for background */
+        z-index: -1;
+    }
+    
+    @keyframes glowEffect {
+        0% {
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 20px rgba(0, 242, 97, 0.7);
+        }
+        100% {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 40px rgba(0, 242, 97, 1);
+        }
+    }
+    
+    
+    
+    .typewriter-text {
+        display: inline-block;
+        word-break: break-word;
+        white-space: normal;
+        max-width: 100%;
+        overflow: hidden;
+        vertical-align: bottom;
+        word-spacing: 0.25em;  /* Menambah jarak antar kata */
+        letter-spacing: 0.1em; /* Menambah jarak antar karakter */
+    }
+    
+    .space-char {
+        display: inline-block;
+        width: 0.5em;  /* Menambah lebar spasi antar kata */
+    }
+    
+    .char-hidden {
+        opacity: 0;
+        display: inline-block;
+    }
+    
+    .char-visible {
+        display: inline-block;
+        color: inherit; /* Warisi warna dari karaoke-highlight */
+        animation: none; /* Animasi akan ditambahkan via class */
+    }
+
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Varela Round", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        background-image: url("bg.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        overflow-x: hidden;
+    }
+
+    #hologramVisualizer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1; /* Above background but below content */
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    #waveVisualizer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* Above background but below content */
+        pointer-events: none;
+        opacity: 0.7;
+        mix-blend-mode: screen;
+    }
+
+    #container {
+        background-color: rgba(0, 0, 0, 0.85);
+        border: 2px solid #4a5052;
+        border-radius: 30px;
+        width: 50%;
+        min-height: 370px; 
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        padding: 20px; /* Pastikan padding cukup tapi tidak berlebihan */
+        color: white;
+        overflow: hidden; /* Menyembunyikan elemen yang melampaui batas */
+    }
+    
+    
     #button {
         z-index: 100;
         width: 30px;
@@ -353,33 +745,7 @@
     
 
     
-    .typewriter-container {
-        position: relative;
-        display: inline-block;
-        background: linear-gradient(90deg, rgba(0, 242, 97, 0.454), rgba(5, 118, 230, 0.391));
-        border-radius: 5px;
-        overflow: hidden;
-        /* padding: 2px; */
-        color: white;
-        font-size: 18px;
-        font-weight: lighter;
-        text-align: center;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 97, 0.7); /* Double shadow effect */
-        animation: glowEffect 2s infinite alternate; /* Add glowing effect */
-        transition: background 2s ease-in-out; /* Smooth transition for background color */
-    }
-    
-    .typewriter-container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: inherit; /* Inherit the background gradient from the parent */
-        filter: blur(12px); /* More intense blur for background */
-        z-index: -1;
-    }
+
     
     @keyframes glowEffect {
         0% {
@@ -388,17 +754,6 @@
         100% {
             text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 40px rgba(0, 242, 97, 1);
         }
-    }
-    
-    
-    
-    .typewriter-text {
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        vertical-align: bottom;
-        word-spacing: 0.25em;  /* Menambah jarak antar kata */
-        letter-spacing: 0.1em; /* Menambah jarak antar karakter */
     }
     
     .space-char {
@@ -420,42 +775,89 @@
 
 /* Mobile Devices */
 @media screen and (max-width: 767px) {
+    #container {
+        width: 90%; /* Mengisi 90% lebar layar pada perangkat mobile */
+        padding: 15px 10px; /* Padding disesuaikan untuk perangkat kecil */
+        min-height: 300px; /* Menyesuaikan tinggi minimum */
+        overflow: hidden; /* Tidak ada overflow */
+    }
+
     #textbox {
-        width: 100%; /* Ensure textbox uses full width on smaller screens */
-        padding: 10px 20px; /* Adjust padding for mobile */
-        max-height: 60%; /* Adjust max height for mobile */
+        width: 100%; /* Mengisi lebar penuh */
+        padding: 10px 15px; /* Padding kecil */
+        overflow-y: auto; /* Agar lirik panjang bisa discroll */
+        max-height: 60%; /* Menjaga tinggi kontainer */
+        word-wrap: break-word; /* Memastikan kata terputus dengan baik */
+        box-sizing: border-box; /* Padding tidak menambah ukuran elemen */
     }
 
     #textbox p {
-        font-size: 16px; /* Adjust font size for better readability on small screens */
-        line-height: 1.4; /* Adjust line-height for better spacing */
+        line-height: 1.4; /* Jarak antar baris */
+        word-break: break-word; /* Memastikan kata terputus jika perlu */
+        white-space: normal; /* Teks membungkus */
+        max-width: 100%; /* Pastikan teks tidak keluar dari kontainer */
+        font-size: 20px; /* Ukuran font lebih besar untuk tampilan mobile */
     }
 }
 
-/* Tablet Devices */
+
+/* Pengaturan untuk tablet */
 @media screen and (max-width: 1024px) {
+    #container {
+        width: 80%; /* Lebar container 80% pada tablet */
+        padding: 20px 15px;
+    }
+
+    p {
+        font-size: 7vw; /* Ukuran font lebih kecil untuk perangkat sangat kecil */
+    }
+
     #textbox {
-        width: 100%; /* Use full width for tablets */
-        padding: 15px 20px; /* Adjust padding for tablets */
-        max-height: 70%; /* Adjust max height for tablets */
+        width: 100%; /* Lebar penuh untuk textbox */
+        padding: 15px 20px;
+        max-height: 70%;
     }
 
     #textbox p {
-        font-size: 18px; /* Slightly larger font size for tablets */
+        /* font-size: 18px; */
         line-height: 1.5;
     }
 }
 
-/* Desktop / Laptop Devices */
+/* Pengaturan untuk desktop dan laptop */
 @media screen and (min-width: 1025px) {
+    #container {
+        width: 50%; /* Lebar container tetap 50% pada layar besar */
+        padding: 25px 30px;
+    }
+
     #textbox {
-        width: 100%; /* Ensure textbox stays full width on larger screens */
-        padding: 15px 30px; /* Default padding */
-        max-height: 80%; /* Limit max-height */
+        width: 100%; /* Lebar penuh untuk textbox */
+        padding: 15px 30px;
+        max-height: 80%;
     }
 
     #textbox p {
-        font-size: 20px; /* Default font size for desktop/laptop */
-        line-height: 1.6; /* Adjust line-height */
+        font-size: 20px;
+        line-height: 1.6;
+    }
+}
+
+/* Pengaturan untuk desktop dan laptop */
+@media screen and (min-width: 1025px) {
+    #container {
+        width: 50%; /* Lebar container tetap 50% pada layar besar */
+        padding: 25px 30px;
+    }
+
+    #textbox {
+        width: 100%; /* Lebar penuh untuk textbox */
+        padding: 15px 30px;
+        max-height: 80%;
+    }
+
+    #textbox p {
+        font-size: 20px;
+        line-height: 1.6;
     }
 }
