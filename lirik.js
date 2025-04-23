@@ -1,184 +1,175 @@
-    let baris = $("p");
-    let lyricTimer = null;
-    let lirik = [
-        "Karena kamu cantik",
-        "Kan ku beri segalanya apa yang ku punya",
-        "Dan hatimu baik",
-        "Sempurnalah duniaku saat kau disisiku",
-        "Bukan karena make up di wajahmu",
-        "Atau lipstik merah itu",
-        "Lembut hati tutur kata",
-        "Terciptalah cinta yang ku puja"
-    ];
+let baris = $("p");
+let lyricTimer = null;
+let lirik = [
+    "Karena kamu cantik",
+    "Kan ku beri segalanya apa yang ku punya",
+    "Dan hatimu baik",
+    "Sempurnalah duniaku saat kau disisiku",
+    "Bukan karena make up di wajahmu",
+    "Atau lipstik merah itu",
+    "Lembut hati tutur kata",
+    "Terciptalah cinta yang ku puja"
+];
 
-    let playing = false;
-    let audio = $("#lagu")[0];
-    let lyricsTimeout; // To track the lyrics timeout
-    let lineTimeouts = []; // Store all individual line timers
+let playing = false;
+let audio = $("#lagu")[0];
+let lyricsTimeout; // To track the lyrics timeout
+let lineTimeouts = []; // Store all individual line timers
 
-    $(document).ready(function () {
-        // Play/Pause on button click
-        $("#play").click(togglePlayPause);
-        $("#stop").click(togglePlayPause);
 
-        // Play/Pause on spacebar
-        $(document).keydown(function(e) {
-            if (e.keyCode === 32) { // Spacebar key
-                e.preventDefault();
-                togglePlayPause();
-            }
-        });
+$(document).ready(function () {
+    // Play/Pause on button click
+    $("#play").click(togglePlayPause);
+    $("#stop").click(togglePlayPause);
+
+    // Play/Pause on spacebar
+    $(document).keydown(function(e) {
+        if (e.keyCode === 32) { // Spacebar key
+            e.preventDefault();
+            togglePlayPause();
+        }
     });
+});
 
-    function resetLyrics() {
-        clearTimeout(lyricsTimeout);
+function resetLyrics() {
+    clearTimeout(lyricsTimeout);
 
-        // Clear all line timeouts
-        lineTimeouts.forEach(timeout => clearTimeout(timeout));
-        lineTimeouts = [];
+    // Clear all line timeouts
+    lineTimeouts.forEach(timeout => clearTimeout(timeout));
+    lineTimeouts = [];
 
-        // Clear all lines
-        for (let i = 0; i < 8; i++) {
-            $(baris[i]).css('opacity', 0).empty();  // Clear and hide all lines
-        }
+    // Clear all lines
+    for (let i = 0; i < 8; i++) {
+        $(baris[i]).css('opacity', 0).empty();  // Clear and hide all lines
     }
+}
 
+function togglePlayPause() {
+    if (playing) {
+        // Pause the audio without resetting the song position
+        audio.pause();
+        $("#play").animate({ opacity: 1 }, 500); // Show play button
+        $("#stop").animate({ opacity: 0 }, 500); // Hide stop button
+        $("#load").removeClass("playing");
+        playing = false;
 
-    function togglePlayPause() {
-        if (playing) {
-            // Pause the audio without resetting the song position
-            audio.pause();
-            $("#play").animate({ opacity: 1 }, 500); // Show play button
-            $("#stop").animate({ opacity: 0 }, 500); // Hide stop button
-            $("#load").removeClass("playing");
-            playing = false;
+        // Reset lyrics when paused
+        resetLyrics();
+    } else {
+        // Play the audio from the current position
+        audio.play();
+        $("#play").animate({ opacity: 0 }, 500); // Hide play button
+        $("#stop").animate({ opacity: 1 }, 500); // Show stop button
+        $("#load").addClass("playing");
+        playing = true;
 
-            // Reset lyrics when paused
-            resetLyrics();
-        } else {
-            // Play the audio from the current position
-            audio.play();
-            $("#play").animate({ opacity: 0 }, 500); // Hide play button
-            $("#stop").animate({ opacity: 1 }, 500); // Show stop button
-            $("#load").addClass("playing");
-            playing = true;
+        // Reset the song to the beginning when play is clicked
+        audio.currentTime = 0;  // This resets the song to the start
 
-            // Reset the song to the beginning when play is clicked
-            audio.currentTime = 0;  // This resets the song to the start
-
-            // Reset lyrics and start animation
-            resetLyrics();
-            
-            // Start lyrics after the initial delay
-            lyricsTimeout = setTimeout(() => {
-                playLyrics(); // Restart the lyric animation from the beginning
-            }, 3750);
-
-            // Reset after song ends
-            audio.onended = function () {
-                playing = false;
-                $("#play").animate({ opacity: 1 }, 500);
-                $("#stop").animate({ opacity: 0 }, 500);
-                $("#load").removeClass("playing");
-            };
-        }
-    }
-
-    function playLyrics() {
-        // Ensure all lines are played with correct timing
-        playLine(0, 0, "rainbow-char");
-        playLine(1, 3500, "float-char");
-        playLine(2, 7000, "shake-char");
-        playLine(3, 10500, "pulse-char");
-        playLine(4, 14000, "spin-char");
-        playLine(5, 17500, "wave-char");
-        playLine(6, 21000, "rainbow-char");
-        playLine(7, 24500, "glow-char");
-    }
-
-    function playLine(index, delay, primaryAnim) {
-        if (!playing) return;
-        const timeoutId = setTimeout(() => {
-            const lineElement = baris[index];
-            const text = lirik[index];
-            const charDuration = 70; // Durasi per huruf dalam ms (sesuaikan dengan tempo lagu)
-            const cursorBlinkSpeed = 600; // Kecepatan kedip kursor
-    
-            // Tambahkan latar belakang dengan efek blur
-            lineElement.classList.add('line-background');
-            
-            // Bersihkan dan persiapkan baris
-            lineElement.innerHTML = '';
-            lineElement.style.opacity = 1;
-            lineElement.classList.add('line-entrance');
-            
-            // Buat container untuk efek ketikan
-            const typewriterContainer = document.createElement('div');
-            typewriterContainer.className = 'typewriter-container';
-            lineElement.appendChild(typewriterContainer);
-            
-            // Buat elemen teks yang akan diisi
-            const textSpan = document.createElement('span');
-            textSpan.className = 'typewriter-text';
-            typewriterContainer.appendChild(textSpan);
-            
-            // Buat kursor (menggunakan CSS yang ada)
-            const cursorSpan = document.createElement('span');
-            cursorSpan.className = 'typewriter-cursor';
-            cursorSpan.textContent = '|';
-            typewriterContainer.appendChild(cursorSpan);
-            
-            // Animasi ketikan huruf per huruf
-            let i = 0;
-            const typeWriter = setInterval(() => {
-                if (i < text.length) {
-                    // Tambahkan karakter dengan animasi
-                    const charSpan = document.createElement('span');
-                    charSpan.textContent = text[i];
-                    charSpan.className = getCharacterAnimationStyle(i, text[i], primaryAnim);
-                    
-                    // Menambahkan efek acak untuk karakter
-                    const effects = ['fade-char', 'rainbow-char', 'float-char', 'shake-char', 'pulse-char', 'spin-char', 'wave-char', 'glow-char'];
-                    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
-                    charSpan.classList.add(randomEffect);
-    
-                    textSpan.appendChild(charSpan);
-                        
-                    // Apply karaoke-highlight style for each character
-                    charSpan.classList.add('karaoke-highlight'); // Apply the karaoke highlight effect
-                    setTimeout(() => {
-                        charSpan.classList.remove('karaoke-highlight');
-                    }, charDuration * 0.7);
-                        
-                    i++;
-                } else {
-                    // Selesai mengetik, hapus kursor dan clear interval
-                    clearInterval(typeWriter);
-                    setTimeout(() => {
-                        cursorSpan.style.opacity = '0';
-                            
-                        // Tambahkan efek khusus untuk baris tertentu
-                        if ([0, 3, 7].includes(index)) {
-                            addFloatingHearts(lineElement);
-                            addSparkleEffect(lineElement);
-                        }
-                    }, 300);
-                }
-            }, charDuration);
-            
-            // Hapus animasi entrance setelah selesai
-            setTimeout(() => {
-                lineElement.classList.remove('line-entrance');
-            }, 1000);
+        // Reset lyrics and start animation
+        resetLyrics();
         
-        }, delay);
-            
-        lineTimeouts.push(timeoutId);
+        // Start lyrics after the initial delay
+        lyricsTimeout = setTimeout(() => {
+            playLyrics(); // Restart the lyric animation from the beginning
+        }, 3750);
+
+        // Reset after song ends
+        audio.onended = function () {
+            playing = false;
+            $("#play").animate({ opacity: 1 }, 500);
+            $("#stop").animate({ opacity: 0 }, 500);
+            $("#load").removeClass("playing");
+        };
     }
+}
+
+function playLyrics() {
+    // Ensure all lines are played with correct timing
+    playLine(0, 0, "rainbow-char");
+    playLine(1, 3500, "float-char");
+    playLine(2, 7000, "shake-char");
+    playLine(3, 10500, "pulse-char");
+    playLine(4, 14000, "spin-char");
+    playLine(5, 17500, "wave-char");
+    playLine(6, 21000, "rainbow-char");
+    playLine(7, 24500, "glow-char");
+}
+
+function playLine(index, delay, primaryAnim) {
+    if (!playing) return;
+    const timeoutId = setTimeout(() => {
+        const lineElement = baris[index];
+        const text = lirik[index];
+        const charDuration = 70; // Durasi per huruf dalam ms (sesuaikan dengan tempo lagu)
     
+        lineElement.classList.add('line-background');
+        
+        // Bersihkan dan persiapkan baris
+        lineElement.innerHTML = '';
+        lineElement.style.opacity = 1;
+        lineElement.classList.add('line-entrance');
+        
+        // Buat container untuk efek ketikan
+        const typewriterContainer = document.createElement('div');
+        typewriterContainer.className = 'typewriter-container';
+        lineElement.appendChild(typewriterContainer);
+        
+        // Buat elemen teks yang akan diisi
+        // const textSpan = document.createElement('span');
+        // textSpan.className = 'typewriter-text';
+        // typewriterContainer.appendChild(textSpan);
+        const textSpan = document.createElement('span');
+        textSpan.className = 'typewriter-text';
+        typewriterContainer.appendChild(textSpan);
+        
+        // Buat kursor (menggunakan CSS yang ada)
+        // const cursorSpan = document.createElement('span');
+        // cursorSpan.className = 'typewriter-cursor';
+        // cursorSpan.textContent = '|';
+        // typewriterContainer.appendChild(cursorSpan);
+        const cursorSpan = document.createElement('span');
+        cursorSpan.className = 'typewriter-cursor';
+        cursorSpan.textContent = '|';
+
+        // TEMPORARY: kita tempatkan dulu, nanti akan dipindahkan ke akhir span
+        typewriterContainer.appendChild(cursorSpan);
+        
+        // Tambahkan elemen baru untuk setiap karakter
+        let i = 0;
+        const typeWriter = setInterval(() => {
+            if (i < text.length) {
+                // Tambahkan karakter dengan animasi
+                const charSpan = document.createElement('span');
+                charSpan.textContent = text[i];
+                charSpan.className = getCharacterAnimationStyle(i, text[i], primaryAnim);
+                textSpan.appendChild(charSpan);
+
+                textSpan.appendChild(cursorSpan);
+
+                // Tambahkan efek karakter
+                charSpan.classList.add('karaoke-highlight'); // Efek highlight karaoke untuk karakter
+                setTimeout(() => {
+                    charSpan.classList.remove('karaoke-highlight');
+                }, charDuration * 0.7);
     
+                i++;
+            } else {
+                clearInterval(typeWriter);
+                setTimeout(() => {
+                    cursorSpan.style.opacity = '0';
+                }, 300);
+            }
+        }, charDuration);
+
+        setTimeout(() => {
+            lineElement.classList.remove('line-entrance');
+        }, 1000);
     
-    
+    }, delay);
+}
+
+
     // Rest of your existing functions remain the same...
     function getCharacterAnimationStyle(index, char, primaryAnim) {
         if (char === " ") {
