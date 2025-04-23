@@ -756,11 +756,6 @@
         }
     }
     
-    .space-char {
-        display: inline-block;
-        width: 0.5em;  /* Menambah lebar spasi antar kata */
-    }
-    
     .char-hidden {
         opacity: 0;
         display: inline-block;
@@ -775,6 +770,15 @@
 
 /* Mobile Devices */
 @media screen and (max-width: 767px) {
+    body {
+        background-attachment: scroll;
+    }
+    /* .sparkle-container,
+    .heart-container,
+    .wave-char,
+    .float-char {
+        display: none !important;
+    } */
     #container {
         width: 90%; /* Mengisi 90% lebar layar pada perangkat mobile */
         padding: 15px 10px; /* Padding disesuaikan untuk perangkat kecil */
@@ -796,7 +800,7 @@
         word-break: break-word; /* Memastikan kata terputus jika perlu */
         white-space: normal; /* Teks membungkus */
         max-width: 100%; /* Pastikan teks tidak keluar dari kontainer */
-        font-size: 20px; /* Ukuran font lebih besar untuk tampilan mobile */
+        font-size: 16px; /* Ukuran font lebih besar untuk tampilan mobile */
     }
 }
 
